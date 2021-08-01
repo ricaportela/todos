@@ -1,20 +1,22 @@
 from django.contrib.auth.models import Group, User
 from rest_framework import generics, permissions, viewsets
 from .serializers import GroupSerializer, UserSerializer
+from .my_permissions import UsersGroupsPermission
 
 from .models import Todo
 from .serializers import TodoSerializer
 
 
 class ListTodo(generics.ListCreateAPIView):
-    permission_classes = [
-        permissions.DjangoModelPermissions,
-    ]
+    permission_classes = (UsersGroupsPermission,)
     queryset = Todo.objects.all()
     serializer_class = TodoSerializer
 
 
 class DetailTodo(generics.RetrieveUpdateDestroyAPIView):
+    permission_classes = [
+        permissions.DjangoModelPermissions,
+    ]
     queryset = Todo.objects.all()
     serializer_class = TodoSerializer
 class UserViewSet(viewsets.ModelViewSet):
